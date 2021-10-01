@@ -9,12 +9,23 @@ use std::fmt;
 use std::hash::Hash;
 
 use wasm_bindgen::prelude::*;
-use web_sys::Event;
+
+// use web_sys::Event;
 
 #[cfg(feature = "dom")]
 pub use dom_node::*;
 #[cfg(feature = "ssr")]
 pub use ssr_node::*;
+
+#[cfg(feature = "dom")]
+pub type Event = web_sys::Event;
+
+#[cfg(not(feature = "dom"))]
+#[derive(Debug, Clone, PartialEq)]
+pub struct Event {
+    pub name: String,
+    pub value: String,
+}
 
 /// Type of event handlers.
 pub type EventHandler = dyn Fn(Event);
